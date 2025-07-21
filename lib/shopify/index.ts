@@ -604,7 +604,8 @@ export async function getProductRecommendations(): Promise<Product[]> {
   return placeholderProducts.slice(1);
 }
 
-export async function getProducts(): Promise<Product[]> {
+export async function getProducts({ sortKey, reverse, query }: { sortKey?: string; reverse?: boolean; query?: string } = {}): Promise<Product[]> {
+  // You can add filtering/sorting logic here if needed
   return placeholderProducts;
 }
 
