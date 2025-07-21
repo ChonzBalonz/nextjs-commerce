@@ -565,7 +565,7 @@ export async function getCollection(handle: string): Promise<Collection | undefi
   return placeholderCollections.find((c) => c.handle === handle);
 }
 
-export async function getCollectionProducts({ collection }: { collection: string }): Promise<Product[]> {
+export async function getCollectionProducts({ collection, sortKey, reverse }: { collection: string; sortKey?: string; reverse?: boolean }): Promise<Product[]> {
   if (collection === 'mens-designer') {
     return placeholderProducts.filter((p) => p.gender === 'men');
   }
