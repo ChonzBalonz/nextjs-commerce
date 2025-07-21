@@ -6,6 +6,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-geist-sans)'],
+        serif: ['var(--font-playfair)']
+      },
       colors: {
         gold: '#D4AF37',
         black: '#000',

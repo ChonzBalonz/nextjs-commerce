@@ -11,6 +11,7 @@ export default function Hero() {
   // Parallax refs
   const bgRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLDivElement>(null);
+  const leftRef = useRef<HTMLDivElement>(null); // New ref for left section
 
   useEffect(() => {
     // Only enable parallax on screens >= 768px (not mobile)
@@ -20,11 +21,15 @@ export default function Hero() {
       // Parallax speeds (increased for more pronounced effect)
       const bgSpeed = 0.6;
       const imgSpeed = 0.3;
+      const leftSpeed = 0.15; // New speed for left section
       if (bgRef.current) {
         bgRef.current.style.transform = `translateY(${scrollY * bgSpeed}px)`;
       }
       if (imgRef.current) {
         imgRef.current.style.transform = `translateY(${scrollY * imgSpeed}px)`;
+      }
+      if (leftRef.current) {
+        leftRef.current.style.transform = `translateY(${scrollY * leftSpeed}px)`;
       }
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -44,16 +49,16 @@ export default function Hero() {
         }}
       />
       {/* Left content */}
-      <div className="relative z-10 flex-1 flex flex-col items-center lg:items-start justify-center py-12 px-6 lg:px-12 w-full lg:w-1/2 h-full text-white text-center lg:text-left">
+      <div ref={leftRef} className="relative z-10 flex-1 flex flex-col items-center lg:items-start justify-center py-12 px-6 lg:px-12 w-full lg:w-1/2 h-full text-white text-center lg:text-left">
         <h1 className="text-5xl lg:text-6xl font-extrabold leading-tight mb-4" style={{letterSpacing: '0.01em'}}>
-          ALL<br />IN<br />ONE<br />SHOP
+          ALL<br />IN<br /><span className="text-black">ONE</span><br />SHOP
         </h1>
         <p className="mb-6 text-lg lg:text-xl font-medium opacity-90">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit
+          Only designer clothes you need
         </p>
         <button
           onClick={handleBuyNow}
-          className="bg-gold text-black font-bold px-8 py-3 rounded shadow hover:bg-white hover:text-gold transition-colors text-lg"
+          className="bg-black text-white font-bold px-8 py-3 rounded shadow hover:bg-white hover:text-black transition-colors text-lg"
         >
           BUY NOW
         </button>

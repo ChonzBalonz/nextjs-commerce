@@ -3,11 +3,18 @@ import { Navbar } from 'components/layout/navbar';
 import { WelcomeToast } from 'components/welcome-toast';
 import { GeistSans } from 'geist/font/sans';
 import { baseUrl } from 'lib/utils';
+import { Playfair_Display } from 'next/font/google';
 import { ReactNode } from 'react';
 import { Toaster } from 'sonner';
 import './globals.css';
 
 const { SITE_NAME } = process.env;
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-playfair',
+  display: 'swap'
+});
 
 export const metadata = {
   metadataBase: new URL(baseUrl),
@@ -30,7 +37,7 @@ export default async function RootLayout({
   // const cart = getCart();
 
   return (
-    <html lang="en" className={GeistSans.variable}>
+    <html lang="en" className={`${GeistSans.variable} ${playfair.variable}`}>
       <body className="bg-neutral-50 text-black selection:bg-teal-300 dark:bg-neutral-900 dark:text-white dark:selection:bg-pink-500 dark:selection:text-white px-2 md:px-6 py-2 md:py-4">
         <CartProvider>
           <Navbar />
