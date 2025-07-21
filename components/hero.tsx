@@ -13,6 +13,8 @@ export default function Hero() {
   const imgRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Only enable parallax on screens >= 768px (not mobile)
+    if (typeof window !== 'undefined' && window.innerWidth < 768) return;
     const handleScroll = () => {
       const scrollY = window.scrollY;
       // Parallax speeds (increased for more pronounced effect)
