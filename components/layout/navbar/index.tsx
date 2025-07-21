@@ -13,7 +13,7 @@ export async function Navbar() {
   const menu = await getMenu('next-js-frontend-header-menu');
 
   return (
-    <nav className="relative flex items-center justify-between p-4 lg:px-6">
+    <nav className="sticky top-0 z-50  flex items-center justify-between p-4 lg:px-6">
       <div className="block flex-none md:hidden">
         <Suspense fallback={null}>
           <MobileMenu menu={menu} />
@@ -31,21 +31,26 @@ export async function Navbar() {
               {SITE_NAME}
             </div>
           </Link>
-          {menu.length ? (
-            <ul className="hidden gap-6 text-sm md:flex md:items-center">
-              {menu.map((item: Menu) => (
-                <li key={item.title}>
-                  <Link
-                    href={item.path}
-                    prefetch={true}
-                    className="text-neutral-500 underline-offset-4 hover:text-black hover:underline dark:text-neutral-400 dark:hover:text-neutral-300"
-                  >
-                    {item.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          ) : null}
+          <ul className="hidden gap-6 text-sm md:flex md:items-center">
+            {/* Only Men and Women category links */}
+            <li>
+              <Link href="/search/mens-designer" className="nav-link">Men</Link>
+            </li>
+            <li>
+              <Link href="/search/womens-designer" className="nav-link">Women</Link>
+            </li>
+            {menu.length ? menu.map((item: Menu) => (
+              <li key={item.title}>
+                <Link
+                  href={item.path}
+                  prefetch={true}
+                  className="text-neutral-500 hover:text-gold dark:text-neutral-400 dark:hover:text-gold"
+                >
+                  {item.title}
+                </Link>
+              </li>
+            )) : null}
+          </ul>
         </div>
         <div className="hidden justify-center md:flex md:w-1/3">
           <Suspense fallback={<SearchSkeleton />}>

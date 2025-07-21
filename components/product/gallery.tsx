@@ -4,6 +4,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import { GridTileImage } from 'components/grid/tile';
 import { useProduct, useUpdateURL } from 'components/product/product-context';
 import Image from 'next/image';
+import { useEffect, useRef } from 'react';
 
 export function Gallery({ images }: { images: { src: string; altText: string }[] }) {
   const { state, updateImage } = useProduct();
@@ -15,6 +16,31 @@ export function Gallery({ images }: { images: { src: string; altText: string }[]
 
   const buttonClassName =
     'h-full px-6 transition-all ease-in-out hover:scale-110 hover:text-black dark:hover:text-white flex items-center justify-center';
+
+  // Ref for the thumbnail list
+  const thumbListRef = useRef<HTMLUListElement>(null);
+
+  // Smooth, infinite auto-scroll for the thumbnail list
+  useEffect(() => {
+    const ul = thumbListRef.current;
+    if (!ul || images.length <= 1) return;
+    let frameId: number;
+    const scrollSpeed = 0.5; // px per frame, adjust for speed
+    function animate() {
+      if (!ul) return;
+      ul.scrollLeft += scrollSpeed;
+      // If we've reached the end, reset to the start for infinite loop
+      if (ul.scrollLeft >= ul.scrollWidth / 2) {
+        ul.scrollLeft = 0;
+      }
+      frameId = requestAnimationFrame(animate);
+    }
+    frameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frameId);
+  }, [images.length]);
+
+  // Duplicate images for seamless infinite scroll
+  const infiniteImages = [...images, ...images];
 
   return (
     <form>
@@ -60,15 +86,14 @@ export function Gallery({ images }: { images: { src: string; altText: string }[]
       </div>
 
       {images.length > 1 ? (
-        <ul className="my-12 flex items-center flex-wrap justify-center gap-2 overflow-auto py-1 lg:mb-0">
-          {images.map((image, index) => {
-            const isActive = index === imageIndex;
-
+        <ul ref={thumbListRef} className="my-12 flex items-center flex-nowrap gap-2 overflow-x-auto py-1 lg:mb-0 scrollbar-hide" style={{scrollBehavior: 'smooth', minWidth: '100%'}}>
+          {infiniteImages.map((image, index) => {
+            const isActive = index % images.length === imageIndex;
             return (
-              <li key={image.src} className="h-20 w-20">
+              <li key={image.src + '-' + index} className="h-20 w-20 flex-shrink-0">
                 <button
                   formAction={() => {
-                    const newState = updateImage(index.toString());
+                    const newState = updateImage((index % images.length).toString());
                     updateURL(newState);
                   }}
                   aria-label="Select product image"

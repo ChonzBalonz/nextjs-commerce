@@ -1,6 +1,7 @@
-import { Carousel } from 'components/carousel';
 import { ThreeItemGrid } from 'components/grid/three-items';
 import Footer from 'components/layout/footer';
+import Hero from '../components/hero';
+import ReactSlickCarousel from '../components/react-slick-carousel';
 
 export const metadata = {
   description:
@@ -13,9 +14,14 @@ export const metadata = {
 export default function HomePage() {
   return (
     <>
-      <ThreeItemGrid />
-      <Carousel />
+      <Hero />
+      <div id="products-section" className="my-8 md:my-12 px-2 md:px-0">
+        <ThreeItemGrid />
+      </div>
       <Footer />
+      <div className="my-8 md:my-12">
+        <ReactSlickCarousel />
+      </div>
     </>
   );
 }

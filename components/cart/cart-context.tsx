@@ -1,17 +1,15 @@
 'use client';
 
 import type {
-  Cart,
-  CartItem,
-  Product,
-  ProductVariant
+    Cart,
+    CartItem,
+    Product,
+    ProductVariant
 } from 'lib/shopify/types';
 import React, {
-  createContext,
-  use,
-  useContext,
-  useMemo,
-  useOptimistic
+    createContext,
+    useMemo,
+    useOptimistic
 } from 'react';
 
 type UpdateType = 'plus' | 'minus' | 'delete';
@@ -26,11 +24,7 @@ type CartAction =
       payload: { variant: ProductVariant; product: Product };
     };
 
-type CartContextType = {
-  cartPromise: Promise<Cart | undefined>;
-};
-
-const CartContext = createContext<CartContextType | undefined>(undefined);
+const CartContext = createContext<undefined>(undefined);
 
 function calculateItemCost(quantity: number, price: string): string {
   return (Number(price) * quantity).toString();
@@ -190,29 +184,18 @@ function cartReducer(state: Cart | undefined, action: CartAction): Cart {
   }
 }
 
-export function CartProvider({
-  children,
-  cartPromise
-}: {
-  children: React.ReactNode;
-  cartPromise: Promise<Cart | undefined>;
-}) {
+export function CartProvider({ children }: { children: React.ReactNode }) {
   return (
-    <CartContext.Provider value={{ cartPromise }}>
+    <CartContext.Provider value={undefined}>
       {children}
     </CartContext.Provider>
   );
 }
 
 export function useCart() {
-  const context = useContext(CartContext);
-  if (context === undefined) {
-    throw new Error('useCart must be used within a CartProvider');
-  }
-
-  const initialCart = use(context.cartPromise);
+  // No context needed, just use local state
   const [optimisticCart, updateOptimisticCart] = useOptimistic(
-    initialCart,
+    createEmptyCart(),
     cartReducer
   );
 
