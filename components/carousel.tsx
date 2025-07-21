@@ -1,6 +1,8 @@
 import { getCollectionProducts } from 'lib/shopify';
+import dynamic from "next/dynamic";
 import Link from 'next/link';
-import { GridTileImage } from './grid/tile';
+
+const GridTileImage = dynamic(() => import('./grid/tile').then(mod => mod.GridTileImage), { ssr: false });
 
 export async function Carousel() {
   // Collections that start with `hidden-*` are hidden from the search page.
